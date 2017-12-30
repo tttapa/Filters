@@ -4,7 +4,7 @@
 class IIRFilter {
   public:
     template <size_t B, size_t A>
-    IIRFilter(const float (&b)[B], const float (&_a)[A]) : b(b), a0(_a[0]), lenB(B), lenA(A-1) {
+    IIRFilter(const float (&b)[B], const float (&_a)[A]) : a0(_a[0]), lenB(B), lenA(A-1) {
       x = new float[lenB]();
       y = new float[lenA]();
       coeff_b = new float[2*lenB-1];
