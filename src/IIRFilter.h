@@ -4,17 +4,18 @@
 class IIRFilter {
   public:
     template <size_t B, size_t A>
-    IIRFilter(const float (&b)[B], const float (&_a)[A]) : a0(_a[0]), lenB(B), lenA(A-1) {
+    IIRFilter(const float (&b)[B], const float (&_a)[A]) : lenB(B), lenA(A-1) {
       x = new float[lenB]();
       y = new float[lenA]();
       coeff_b = new float[2*lenB-1];
       coeff_a = new float[2*lenA-1];
-      for (uint8_t i = 0; i < 2*lenB-1; i++) {
-        coeff_b[i] = b[(2*lenB - 1 - i) % lenB];
-      }
+      float a0 = _a[0];
       float *a = &_a[1];
+      for (uint8_t i = 0; i < 2*lenB-1; i++) {
+        coeff_b[i] = b[(2*lenB - 1 - i) % lenB] / a0;
+      }
       for (uint8_t i = 0; i < 2*lenA-1; i++) {
-        coeff_a[i] = a[(2*lenA - 2 - i) % lenA];
+        coeff_a[i] = a[(2*lenA - 2 - i) % lenA] / a0;
       }
     }
     ~IIRFilter() {
@@ -35,7 +36,7 @@ class IIRFilter {
       for (uint8_t i = 0; i < lenA; i++) {
         a_terms += y[i] * a_shift[i];
       }
-      float filtered = (b_terms - a_terms) / a0;
+      float filtered = b_terms - a_terms;
       y[i_a] = filtered;
       i_b++;
       if(i_b == lenB)
@@ -47,7 +48,6 @@ class IIRFilter {
     }
   private:
     const uint8_t lenB, lenA;
-    const float a0;
     uint8_t i_b = 0, i_a = 0;
     float *x;
     float *y;
