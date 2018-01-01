@@ -10,7 +10,7 @@ class IIRFilter {
       coeff_b = new float[2*lenB-1];
       coeff_a = new float[2*lenA-1];
       float a0 = _a[0];
-      float *a = &_a[1];
+      const float *a = &_a[1];
       for (uint8_t i = 0; i < 2*lenB-1; i++) {
         coeff_b[i] = b[(2*lenB - 1 - i) % lenB] / a0;
       }
