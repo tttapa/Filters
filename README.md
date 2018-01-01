@@ -18,7 +18,7 @@ The difference equation for FIR filters is given by
 ```cpp
 const float b_coefficients[] = { b_0, b_1, b_2, ... , b_P };
 const float a_coefficients[] = { a_0, a_1, a_2, ... , a_Q };
-FIRFilter iir(b_coefficients, a_coefficients);
+IIRFilter iir(b_coefficients, a_coefficients);
 ```
 
 ## Usage
