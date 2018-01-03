@@ -40,8 +40,8 @@ In this documentation, we'll only look at the implementation of the FIR filter, 
 ![FIR difference equation](https://wikimedia.org/api/rest_v1/media/math/render/svg/c43ba6c329a471401e87fe17c6130d801602ffdf)  
 All we have to do is multiplying the previous input samples with their respective coefficients. 
 
-![implementation-1](https://raw.githubusercontent.com/tttapa/Filters/explain-implementation/Filters-1.svg)
-![implementation-2](https://raw.githubusercontent.com/tttapa/Filters/explain-implementation/Filters-2.svg)
+![implementation-1](https://raw.githubusercontent.com/tttapa/Filters/explain-implementation/Filters-1.png)
+![implementation-2](https://raw.githubusercontent.com/tttapa/Filters/explain-implementation/Filters-2.png)
 
 ### Code
 Let's start with the easiest part: calculating the dot product of x and b_j.
