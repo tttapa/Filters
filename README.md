@@ -40,39 +40,8 @@ In this documentation, we'll only look at the implementation of the FIR filter, 
 ![FIR difference equation](https://wikimedia.org/api/rest_v1/media/math/render/svg/c43ba6c329a471401e87fe17c6130d801602ffdf)  
 All we have to do is multiplying the previous input samples with their respective coefficients. 
 
-  $$\vec{x}[n] = \{x[n-3], x[n-2], x[n-1], x[n]\}$$
-  $$\vec{b} = \{b_3, b_2, b_1, b_0\}$$
-  $$y[n]=\sum\limits_{i=0}^{3}b_i x[n-i] = \vec{b}\cdot\vec{x}[n] &emsp;(1)$$ 
-The dot product can be very easily implemented using a for-loop.
-Having to shift the buffer every time a new sample comes in is rather inefficient ($O(n)$). It would be better to use a ring buffer ($O(1)$). However, then we lose the simplicity of the dot product. Unless we shift the coefficient vector as well. If $\vec{x}[n]$ is a ring buffer, it could look like this (for $n=4k+2, k\in\mathbb{N}$):
-$$\vec{x}[n] = \{x[n-2], x[n-1], x[n], x[n-3]\}$$
-To ensure that $(1)$ is still valid, $\vec{b}$ should be as follows:
-$$\vec{b} = \{b_2, b_1, b_0, b_3\}$$
-
-The principle of a ring buffer is rather simple. Every time a sample is added, it is inserted into the array at index $j$, then $j$ is incremented. If $j$ is equal to the length of the array, it is reset to zero.
-For example:
-$$n = 0, j = 0:&emsp;x = [x[0], 0, 0, 0]$$
-$$n = 1, j = 1:&emsp;x = [x[0], x[1], 0, 0]$$
-$$n = 2, j = 2:&emsp;x = [x[0], x[1], x[2], 0]$$
-$$n = 3, j = 3:&emsp;x = [x[0], x[1], x[2], x[3]]$$
-$$n = 4, j = 0:&emsp;x = [x[4], x[1], x[2], x[3]]$$
-$$n = 5, j = 1:&emsp;x = [x[4], x[5], x[2], x[3]]$$
-$$n = 6, j = 2:&emsp;x = [x[4], x[5], x[6], x[3]]$$
-$$n = 7, j = 3:&emsp;x = [x[4], x[5], x[6], x[7]]$$
-$$etc.$$ 
-Let's use the notation $x[n-i] = x_i$ to show the parallels between $x_i$ and $b_i$. $x_0$ represents the most recent sample, $x_1$ the previous sample, etc.
-$$$$
-There are four different situations that require a different coefficient vector $\vec{b_j}$:
-$$j = 0:&emsp; \vec{x_0} = \{x_0, x_3, x_2, x_1\}, \vec{b_0} = \{b_0, b_3, b_2, b_1\}$$
-$$j = 1:&emsp; \vec{x_1} = \{x_1, x_0, x_3, x_2\}, \vec{b_1} = \{b_1, b_0, b_3, b_2\}$$
-$$j = 2:&emsp; \vec{x_2} = \{x_2, x_1, x_0, x_3\}, \vec{b_2} = \{b_2, b_1, b_0, b_3\}$$
-$$j = 3:&emsp; \vec{x_3} = \{x_3, x_2, x_1, x_0\}, \vec{b_3} = \{b_3, b_2, b_1, b_0\}$$
-We could use four different coefficient vectors, but that would be pretty wasteful. Instead, we can use a single, larger array:
-$$\vec{b}=\{b_3, b_2, b_1, b_0, b_3, b_2, b_1\}$$
-By changing the offset in this array, we can select any of the coefficient vectors used above:
-$$\vec{b_j} = \vec{b}[4-1-j], j\in[0,3]$$
-(Some vectors will be longer than others, but we only care about the first four elements.)
-Now that we have the input vector $\vec{x}$ (the ring buffer) and the right coefficient vector $\vec{b_j}$ (depending on the index $j$ of the ring buffer), we can just multiply these two vectors to calculate the filter's output $y$.
+![implementation-1](https://raw.githubusercontent.com/tttapa/Filters/explain-implementation/Filters-1.svg)
+![implementation-2](https://raw.githubusercontent.com/tttapa/Filters/explain-implementation/Filters-2.svg)
 
 ### Code
 Let's start with the easiest part: calculating the dot product of x and b_j.
