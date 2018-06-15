@@ -16,16 +16,13 @@ void filter(AudioFile<double> &source, int index);
 
 int main() {
     AudioFile<double> source;
-    AudioFile<double> outputs[numberOfBands];
-
     source.load("input.wav");
     int sampleRate = source.getSampleRate();
     assert(sampleRate == filterSampleRate);
 
     #pragma omp parallel for
-    for (int i = 0; i < numberOfBands; i++) {
+    for (int i = 0; i < numberOfBands; i++)
         filter(source, i);
-    }
 
     return 0;
 }
@@ -45,15 +42,18 @@ void filter(AudioFile<double> &source, int index) {
     for (int channel = 0; channel < numChannels; channel++)
         filters[channel] = new SOSFilter<numberOfBiQuads>(sos_matrices[index], gain[index]);
 
-    for (int sample = 0; sample < numSamples; sample++) {
-        for (int channel = 0; channel < numChannels; channel++) {
-            output.samples[channel][sample] =
-                filters[channel]->filter(source.samples[channel][sample]);
+    for (int channel = 0; channel < numChannels; channel++) {
+        auto &channelSamples = output.samples[channel];
+        auto &sourceChannelSamples = source.samples[channel];
+        Filter &channelFilter = *filters[channel];
+        for (int sample = 0; sample < numSamples; sample++) {
+            channelSamples[sample] =
+                channelFilter.filter(sourceChannelSamples[sample]);
         }
     }
 
-    char name[32] = "";
-    snprintf(name, 32, "output_%d.wav", index + 1);
+    char name[14] = "";
+    snprintf(name, 14, "output_%02d.wav", index + 1);
     output.save(name);
 
     for (int channel = 0; channel < numChannels; channel++)
