@@ -1,0 +1,8 @@
+{
+    "C_Cpp.default.includePath": [
+        "/home/pieter/lib/Catch2/single_include"
+    ],
+    "files.associations": {
+        "ratio": "cpp"
+    }
+}

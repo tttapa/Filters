@@ -1,12 +1,17 @@
 #ifndef FIRFILTER_H
 #define FIRFILTER_H
 
-class FIRFilter {
+#ifndef ARDUINO
+#include <cstdint>
+#endif
+#include "Filter.h"
+
+class FIRFilter : public Filter {
   public:
     template <size_t B>
-    FIRFilter(const float (&b)[B]) : lenB(B) {
-      x = new float[lenB]();
-      coeff_b = new float[2*lenB-1];
+    FIRFilter(const double (&b)[B]) : lenB(B) {
+      x = new double[lenB]();
+      coeff_b = new double[2*lenB-1];
       for (uint8_t i = 0; i < 2*lenB-1; i++) {
         coeff_b[i] = b[(2*lenB - 1 - i)%lenB];
       } 
@@ -15,10 +20,10 @@ class FIRFilter {
       delete[] x;
       delete[] coeff_b;
     }
-    float filter(float value) {
+    double filter(double value) {
       x[i_b] = value;
-      float b_terms = 0;
-      float *b_shift = &coeff_b[lenB - i_b - 1];
+      double b_terms = 0;
+      double *b_shift = &coeff_b[lenB - i_b - 1];
       for (uint8_t i = 0; i < lenB; i++) {
         b_terms += x[i] * b_shift[i];
       }
@@ -30,8 +35,8 @@ class FIRFilter {
   private:
     const uint8_t lenB;
     uint8_t i_b = 0;
-    float *x;
-    float *coeff_b;
+    double *x;
+    double *coeff_b;
 };
 
 #endif
