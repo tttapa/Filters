@@ -1,20 +1,20 @@
 #include <FIRFilter.h>
 #include <IIRFilter.h>
 
-const float ECG_samplefreq  = 360;
+const double ECG_samplefreq  = 360;
 const uint8_t ECG_pin = A0;
 const int16_t DC_offset = 511;
 
 // 50 Hz notch
-const float b_notch[] = { 1.39972748302835,  -1.79945496605670, 1.39972748302835 };
+const double b_notch[] = { 1.39972748302835,  -1.79945496605670, 1.39972748302835 };
 
 // 35 Hz Butterworth low-pass
-const float b_lp[] = { 0.00113722762905776, 0.00568613814528881, 0.0113722762905776,  0.0113722762905776,  0.00568613814528881, 0.00113722762905776 };
-const float a_lp[] = { 1, -3.03124451613593, 3.92924380774061,  -2.65660499035499, 0.928185738776705, -0.133188755896548 };
+const double b_lp[] = { 0.00113722762905776, 0.00568613814528881, 0.0113722762905776,  0.0113722762905776,  0.00568613814528881, 0.00113722762905776 };
+const double a_lp[] = { 1, -3.03124451613593, 3.92924380774061,  -2.65660499035499, 0.928185738776705, -0.133188755896548 };
 
 // 0.3 Hz high-pass
-const float b_hp[] = { 1, -1 };
-const float a_hp[] = { 1, -0.995 };
+const double b_hp[] = { 1, -1 };
+const double a_hp[] = { 1, -0.995 };
 
 FIRFilter notch(b_notch);
 IIRFilter lp(b_lp, a_lp);
@@ -38,7 +38,7 @@ void loop() {
 
 void measureECGAndSend() {
   int16_t value = analogRead(ECG_pin);
-  float filtered = notch.filter(
+  double filtered = notch.filter(
                       lp.filter(
                       hp.filter(value - DC_offset)));
   value = round(filtered) + DC_offset;
