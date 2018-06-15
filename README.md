@@ -4,7 +4,7 @@ An Arduino finite impulse response and infinite impulse response filter library.
 ## Digital filters
 This library implements digital [finite impulse response](https://en.wikipedia.org/wiki/Finite_impulse_response) filters (FIR) 
 and [infinite impulse response](https://en.wikipedia.org/wiki/Infinite_impulse_response) filters (IIR). 
-double precision floating point arithmetic is used.
+Double precision floating point arithmetic is used.
 
 ### FIR
 The difference equation for FIR filters is given by  
