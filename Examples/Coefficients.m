@@ -7,18 +7,18 @@ number_of_bands = 10;
 
 
 min_freq = 80;
-max_freq = 15000;
-b = log(max_freq/min_freq)/(number_of_bands-1);
-frequencies = min_freq * exp((0:number_of_bands-1).*b);
+max_freq = 10000;
+b = log(max_freq/min_freq)/(number_of_bands-2);
+frequencies = min_freq * exp((0:number_of_bands-2).*b);
 
 filters = [];
 d = fdesign.lowpass('N,F3dB',order,frequencies(1),samplefreq);
 filters = [filters design(d, filter_type)];
-for i = 1:number_of_bands-1
+for i = 1:number_of_bands-2
     d = fdesign.bandpass('N,F3dB1,F3dB2',order,frequencies(i),frequencies(i+1),samplefreq);
     filters = [filters design(d,filter_type)];
 end
-d = fdesign.highpass('N,F3dB',order,frequencies(number_of_bands),samplefreq);
+d = fdesign.highpass('N,F3dB',order,frequencies(number_of_bands-1),samplefreq);
 filters = [filters design(d, filter_type)];
 
 fvtool(filters);
