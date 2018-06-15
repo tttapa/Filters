@@ -7,7 +7,7 @@ number_of_bands = 10;
 
 
 min_freq = 80;
-max_freq = 15000;
+max_freq = 1000;
 b = log(max_freq/min_freq)/(number_of_bands-1);
 frequencies = min_freq * exp((0:number_of_bands-1).*b);
 
@@ -27,12 +27,11 @@ axis([0.02, samplefreq/2000 -60 6]);
 
 fileID = fopen('Coefficients.h','w');
 
-fprintf(fileID, 'constexpr int filterSampleRate = %d;\n\n',samplefreq);
-fprintf(fileID, 'constexpr int numberOfBands = %d;\n\n',number_of_bands);
-fprintf(fileID, 'constexpr int numberOfBiQuads= %d;\n\n',number_of_biquads);
+fprintf(fileID, 'const int filterSampleRate = %d;\n\n',samplefreq);
+fprintf(fileID, 'const int numberOfBands = %d;\n\n',number_of_bands);
 
 number_of_biquads = ceil(order/2);
-fprintf(fileID, 'const double sos_matrices[][numberOfBiQuads][6] = {\n'); 
+fprintf(fileID, 'const double sos_matrices[][%d][6] = {\n', number_of_biquads); 
 for i = 1:number_of_bands
     fprintf(fileID, '    {\n');
     SOS_matrix = filters(i).coefficients{1,1};
@@ -47,7 +46,7 @@ for i = 1:number_of_bands
 end
 fprintf(fileID, '};\n\n');
 
-fprintf(fileID, 'const double gain[][numberOfBiQuads] = {\n'); 
+fprintf(fileID, 'const double gain[][%d] = {\n', number_of_biquads); 
 for i = 1:number_of_bands
     fprintf(fileID, '    {');
     gain_array = filters(i).coefficients{1,2}(1:number_of_biquads);
