@@ -1,7 +1,9 @@
 #ifndef BiQuadFilter_H
 #define BiQuadFilter_H
 
+#ifndef ARDUINO
 #include <cstdint>
+#endif
 #include "Filter.h"
 
 class BiQuadFilterDF2 : public Filter

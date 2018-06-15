@@ -1,7 +1,9 @@
 #ifndef SOSFILTER_H
 #define SOSFILTER_H
 
+#ifndef ARDUINO
 #include <cstddef>
+#endif
 #include "BiQuadFilter.h"
 
 template <size_t N>
