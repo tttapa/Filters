@@ -28,18 +28,20 @@ IIRFilter iir(b_coefficients, a_coefficients);
 When dealing with high-order IIR filters, they can get unstable.  
 To prevent this, BiQuadratic filters (second order) are used.
 
-Currently, only Direct Form 2 is implemented.
+Both Direct Form 1 and 2 are implemented.
 ```cpp
 const double b_coefficients[] = { b_0, b_1, b_2 };
 const double a_coefficients[] = { a_0, a_1, a_2 };
-BiQuadFilterDF2 biquad(b_coefficients, a_coefficients);
+BiQuadFilterDF1 biquad1(b_coefficients, a_coefficients);
+BiQuadFilterDF2 biquad2(b_coefficients, a_coefficients);
 ```
 Optionally, you can specify a gain:
 ```cpp
 const double b_coefficients[] = { b_0, b_1, b_2 };
 const double a_coefficients[] = { a_0, a_1, a_2 };
 const double gain = 1;
-BiQuadFilterDF2 biquad(b_coefficients, a_coefficients, gain);
+BiQuadFilterDF1 biquad1(b_coefficients, a_coefficients, gain);
+BiQuadFilterDF2 biquad2(b_coefficients, a_coefficients, gain);
 ```
 
 ### Second Order Sections

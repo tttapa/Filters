@@ -30,6 +30,26 @@ TEST_CASE("BiQuadDF2 test", "[BIQUADDF2]")
     }
 }
 
+TEST_CASE("BiQuadDF1 test", "[BIQUADDF1]")
+{
+    const double b[] = {0.500000000000000, 0, -0.500000000000000};
+    const double a[] = {0.500000000000000, 0.422665745365229, 0.262062811036003};
+    const double gain = 0.5;
+
+    const double signal[] = {1, 2, 3, 2, 1, 0, 0, 0, 4, 4, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    const size_t signalLength = sizeof(signal) / sizeof(signal[0]);
+
+    const double expected[] = {0.50000000000000, 0.577334254634772, 0.249898362843829, -0.513842630947802, -0.696610777660332, -0.141814884268856, -0.0150078552899556, 0.0870154271214089, 1.93430912076473, 0.319260572540564, -1.78370198691754, -0.159513186566006, -0.430274566724766, -0.0526704109495565, 0.270041881951755, -0.200668994726211, 0.0280959510918313, 0.0814253694714912, -0.0835572368023246, 0.0279564411207387, 0.0201620286695239};
+
+    BiQuadFilterDF1 filter(b, a, gain);
+    for (size_t i = 0; i < signalLength; i++)
+    {
+        REQUIRE_THAT(
+            filter.filter(signal[i]),
+            WithinULP(expected[i], 1 << 7));
+    }
+}
+
 TEST_CASE("Cascade test", "[CASCADE]")
 {
     /*
