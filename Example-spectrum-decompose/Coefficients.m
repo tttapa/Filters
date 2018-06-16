@@ -34,6 +34,8 @@ axis([0.02, samplefreq/2000 -60 6]);
 
 fileID = fopen('Coefficients.h','w');
 
+number_of_biquads = ceil(order/2);
+
 fprintf(fileID, '/* This is an automatically generated file, do not edit it. Edit Coefficients.m instead. */\n\n');
 fprintf(fileID, 'constexpr int filterSampleRate = %d;\n\n',samplefreq);
 fprintf(fileID, 'constexpr int numberOfBands = %d;\n\n',number_of_bands);
