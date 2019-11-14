@@ -1,6 +1,11 @@
 # Filters
 An Arduino finite impulse response and infinite impulse response filter library.
 
+## New, Improved Arduino-Filters library
+
+I created a new repository with an updated and improved version of this library.  
+You can find it here: [**Arduino-Filters**](https://github.com/tttapa/Arduino-Filters).
+
 ## Digital filters
 This library implements digital [finite impulse response](https://en.wikipedia.org/wiki/Finite_impulse_response) filters (FIR) 
 and [infinite impulse response](https://en.wikipedia.org/wiki/Infinite_impulse_response) filters (IIR). 
